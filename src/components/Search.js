@@ -2,8 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Search() {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState('React');
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
   const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    const timerID = setTimeout(() => {
+      if (term) {
+        setDebouncedTerm(term);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timerID);
+    };
+  }, [term]);
 
   useEffect(() => {
     const callWikiApi = async () => {
@@ -13,16 +26,14 @@ function Search() {
           list: 'search',
           origin: '*',
           format: 'json',
-          srsearch: term,
-          utf8: '',
+          srsearch: debouncedTerm,
         },
       });
       setResults(data.query.search);
     };
-    if (term) {
-      callWikiApi();
-    }
-  }, [term]);
+
+    callWikiApi();
+  }, [debouncedTerm]);
 
   const renderResults = results.map((result) => (
     <div key={result.pageid} className="item">
