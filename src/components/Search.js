@@ -3,10 +3,11 @@ import axios from 'axios';
 
 function Search() {
   const [term, setTerm] = useState('');
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     const callWikiApi = async () => {
-      await axios.get('https://zh.wikipedia.org/w/api.php', {
+      const { data } = await axios.get('https://zh.wikipedia.org/w/api.php', {
         params: {
           action: 'query',
           list: 'search',
@@ -16,12 +17,29 @@ function Search() {
           utf8: '',
         },
       });
+      setResults(data.query.search);
     };
     if (term) {
       callWikiApi();
     }
   }, [term]);
 
+  const renderResults = results.map((result) => (
+    <div key={result.pageid} className="item">
+      <div className="content">
+        <div className="header">
+          <a
+            href={`https://zh.wikipedia.org?curid=${result.pageid}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {result.title}
+          </a>
+        </div>
+        {result.snippet}
+      </div>
+    </div>
+  ));
   return (
     <div>
       <div className="ui form">
@@ -36,8 +54,10 @@ function Search() {
               onChange={(e) => setTerm(e.target.value)}
             />
           </label>
-
         </div>
+      </div>
+      <div className="ui celled list">
+        {renderResults}
       </div>
     </div>
   );
