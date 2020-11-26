@@ -1,6 +1,7 @@
 import React from 'react';
 // import Accordion from './components/Accordion';
-import Search from './components/Search';
+// import Search from './components/Search';
+import Dropdown from './components/Dropdown';
 
 // const items = [
 //   {
@@ -17,11 +18,27 @@ import Search from './components/Search';
 //   },
 // ];
 
+const options = [
+  {
+    label: '紅色',
+    value: 'red',
+  },
+  {
+    label: '藍色',
+    value: 'blue',
+  },
+  {
+    label: '綠色',
+    value: 'green',
+  },
+];
+
 export default function App() {
   return (
     <div>
       {/* <Accordion items={items} /> */}
-      <Search />
+      {/* <Search /> */}
+      <Dropdown options={options} />
     </div>
   );
 }
