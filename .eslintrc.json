@@ -25,6 +25,9 @@
     "rules": {
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "max-len": "off",
-      "react/prop-types": "off"
+      "react/prop-types": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/role-has-required-aria-props": "off",
+      "jsx-a11y/no-static-element-interactions": "off"
     }
 }

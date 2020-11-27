@@ -1,11 +1,18 @@
 import React from 'react';
 
-function Dropdown({ options }) {
-  const renderOptions = options.map((option) => (
-    <div key={option.value} className="item">
-      {option.label}
-    </div>
-  ));
+function Dropdown({ options, selected, onSelectedChange }) {
+  const renderOptions = options.map((option) => {
+    if (option.value === selected.value) return null;
+    return (
+      <div
+        key={option.value}
+        className="item"
+        onClick={() => { onSelectedChange(option); }}
+      >
+        {option.label}
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -16,7 +23,7 @@ function Dropdown({ options }) {
             <br />
             <div className="ui selection dropdown visible active">
               <i className="dropdown icon" />
-              <div className="text">顏色會顯示在這邊</div>
+              <div className="text">{selected.label}</div>
               <div className="menu visible transition">{renderOptions}</div>
             </div>
           </label>
