@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Dropdown({ options, selected, onSelectedChange }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const renderOptions = options.map((option) => {
     if (option.value === selected.value) return null;
     return (
@@ -21,10 +22,15 @@ function Dropdown({ options, selected, onSelectedChange }) {
           <label htmlFor="colorOptions" className="label">
             選一個顏色
             <br />
-            <div className="ui selection dropdown visible active">
+            <div
+              onClick={() => setMenuOpen(!menuOpen)}
+              className={`ui selection dropdown ${menuOpen ? 'visible active' : ''}`}
+            >
               <i className="dropdown icon" />
               <div className="text">{selected.label}</div>
-              <div className="menu visible transition">{renderOptions}</div>
+              <div className={`menu ${menuOpen ? 'visible transition' : ''}`}>
+                {renderOptions}
+              </div>
             </div>
           </label>
         </div>
