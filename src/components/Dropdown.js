@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function Dropdown({ options, selected, onSelectedChange }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const ref = useRef();
+
+  useEffect(() => {
+    document.body.addEventListener('click', (e) => {
+      if (ref.current && ref.current.contains(e.target)) {
+        return;
+      }
+      setOpenMenu(false);
+    }, true);
+  }, []);
+
   const renderOptions = options.map((option) => {
     if (option.value === selected.value) return null;
     return (
       <div
         key={option.value}
         className="item"
-        onClick={() => { onSelectedChange(option); }}
+        onClick={() => {
+          onSelectedChange(option);
+        }}
       >
         {option.label}
       </div>
@@ -16,24 +29,22 @@ function Dropdown({ options, selected, onSelectedChange }) {
   });
 
   return (
-    <div>
-      <div className="ui form">
-        <div className="field">
-          <label htmlFor="colorOptions" className="label">
-            選一個顏色
-            <br />
-            <div
-              onClick={() => setMenuOpen(!menuOpen)}
-              className={`ui selection dropdown ${menuOpen ? 'visible active' : ''}`}
-            >
-              <i className="dropdown icon" />
-              <div className="text">{selected.label}</div>
-              <div className={`menu ${menuOpen ? 'visible transition' : ''}`}>
-                {renderOptions}
-              </div>
+    <div ref={ref} className="ui form">
+      <div className="field">
+        <label htmlFor="colorOptions" className="label">
+          選一個顏色
+          <br />
+          <div
+            onClick={() => setOpenMenu(!openMenu)}
+            className={`ui selection dropdown ${openMenu ? 'visible active' : ''}`}
+          >
+            <i className="dropdown icon" />
+            <div className="text">{selected.label}</div>
+            <div className={`menu ${openMenu ? 'visible transition' : ''}`}>
+              {renderOptions}
             </div>
-          </label>
-        </div>
+          </div>
+        </label>
       </div>
     </div>
   );
