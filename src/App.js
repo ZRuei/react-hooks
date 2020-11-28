@@ -35,15 +35,25 @@ const options = [
 
 export default function App() {
   const [selected, setSelected] = useState(options[0]);
+  const [showDropdown, setShowDropdown] = useState(true);
   return (
     <div>
       {/* <Accordion items={items} /> */}
       {/* <Search /> */}
-      <Dropdown
-        options={options}
-        selected={selected}
-        onSelectedChange={setSelected}
-      />
+      <button
+        type="button"
+        onClick={() => setShowDropdown(!showDropdown)}
+      >
+        {showDropdown ? '隱藏下拉式選單' : '顯示下拉式選單'}
+      </button>
+      {showDropdown
+        ? (
+          <Dropdown
+            options={options}
+            selected={selected}
+            onSelectedChange={setSelected}
+          />
+        ) : null}
     </div>
   );
 }
