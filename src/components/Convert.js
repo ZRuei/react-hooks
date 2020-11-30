@@ -3,6 +3,18 @@ import axios from 'axios';
 
 export default function Convert({ language, text }) {
   const [translatedText, setTranslatedText] = useState('');
+  const [debouncedText, setDebouncedText] = useState(text);
+
+  useEffect(() => {
+    const timerID = setTimeout(() => {
+      if (text) {
+        setDebouncedText(text);
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timerID);
+    };
+  }, [text]);
 
   useEffect(() => {
     const callTranslateApi = async () => {
@@ -10,7 +22,7 @@ export default function Convert({ language, text }) {
         {},
         {
           params: {
-            q: text,
+            q: debouncedText,
             target: language.value,
             key: 'AIzaSyCHUCmpR7cT_yDFHC98CZJy2LTms-IwDlM',
           },
@@ -18,7 +30,7 @@ export default function Convert({ language, text }) {
       setTranslatedText(data.data.translations[0].translatedText);
     };
     callTranslateApi();
-  }, [language, text]);
+  }, [language, debouncedText]);
 
   return (
     <h1 className="ui header">
