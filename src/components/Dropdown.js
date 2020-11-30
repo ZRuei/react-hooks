@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-function Dropdown({ options, selected, onSelectedChange }) {
+function Dropdown(
+  {
+    label, options, selected, onSelectedChange,
+  },
+) {
   const [openMenu, setOpenMenu] = useState(false);
   const ref = useRef();
 
@@ -38,7 +42,7 @@ function Dropdown({ options, selected, onSelectedChange }) {
     <div ref={ref} className="ui form">
       <div className="field">
         <label htmlFor="colorOptions" className="label">
-          選一個顏色
+          {label}
           <br />
           <div
             onClick={() => setOpenMenu(!openMenu)}
